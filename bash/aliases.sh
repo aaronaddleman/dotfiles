@@ -12,3 +12,4 @@ export GREP_COLOR='1;33'
 
 # colored LS
 export LSCOLORS='Gxfxcxdxdxegedabagacad'
+
