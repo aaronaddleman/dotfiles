@@ -1,9 +1,22 @@
 # shellcheck source=/dev/null
 [ -s ~/.profile ] && . ~/.profile
 
-source ~/.bash/path.sh
-source ~/.bash/env.sh
-source ~/.bash/completion.sh
-source ~/.bash/aliases.sh
-source ~/.bash/functions.sh
-source ~/.bash/prompt.sh
+set -x
+
+# load defaults
+SOURCE="${BASH_SOURCE[0]}"
+MYBASHDIR=$(dirname "$SOURCE")
+
+source $MYBASHDIR/defaults.sh
+
+source $MYBASHDIR/bash/path.sh
+source $MYBASHDIR/bash/env.sh
+source $MYBASHDIR/bash/completion.sh
+source $MYBASHDIR/bash/aliases.sh
+source $MYBASHDIR/bash/functions.sh
+source $MYBASHDIR/bash/prompt.sh
+
+if [ -d "$HOME/.bash.d" ]; then
+  source $HOME/.bash.d/*sh
+fi
+
