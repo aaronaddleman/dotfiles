@@ -1,0 +1,13 @@
+[user]
+  name = Aaron Addleman
+[color]
+  status = auto
+  diff = auto
+  branch = auto
+[alias]
+  who = shortlog -s -n --no-merges
+  standup = shortlog --since=yesterday
+  today = shortlog --since=midnight
+  uncommit = reset HEAD^
+  unamend = reset --soft HEAD@{1}
+  hist = for-each-ref --count=5 --sort=-comitterdate --format='%(refname:name)' refs/heads/
