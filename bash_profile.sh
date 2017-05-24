@@ -1,7 +1,6 @@
 # shellcheck source=/dev/null
 [ -s ~/.profile ] && . ~/.profile
 
-set -x
 
 # load defaults
 SOURCE="${BASH_SOURCE[0]}"

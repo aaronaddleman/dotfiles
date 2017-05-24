@@ -1,4 +1,0 @@
-PLUGINS_ENABLED=true
-PLUGINS_DIR=plugins/enabled/
-PLUGINS_PATTERN="*"
-
