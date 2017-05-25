@@ -6,7 +6,7 @@
 SOURCE="${BASH_SOURCE[0]}"
 MYBASHDIR=$(dirname "$SOURCE")
 
-source $MYBASHDIR/defaults.sh
+source $MYBASHDIR/main/defaults.sh
 
 source $MYBASHDIR/bash/path.sh
 source $MYBASHDIR/bash/env.sh
