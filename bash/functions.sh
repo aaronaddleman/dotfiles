@@ -4,7 +4,7 @@
 function gscan() {
   for d in */
   do
-    pwd=$(PWD)
+    pwd=$(pwd)
     cd $d
     echo "==$d=="
     git status --short
