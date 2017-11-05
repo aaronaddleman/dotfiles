@@ -12,3 +12,6 @@ if hash gls 2>/dev/null; then
   export set LSCOLORS="gxfxbEaEBxxEhEhBaDaCaD"
   alias ls='gls --color=auto'
 fi
+
+#if your running gtk and want to ignore errors
+export NO_AT_BRIDGE=1
