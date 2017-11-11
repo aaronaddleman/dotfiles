@@ -19,15 +19,12 @@ source $SCRIPT_PATH/bash/completion.sh
 source $SCRIPT_PATH/bash/aliases.sh
 source $SCRIPT_PATH/bash/functions.sh
 source $SCRIPT_PATH/bash/prompt.sh
+source $SCRIPT_PATH/bash/rvm.sh
 
 # if you have any extra stuff you want to load
-for f in $HOME/.bash.d/*; do
-    ## Check if the glob gets expanded to existing files.
-    ## If not, f here will be exactly the pattern above
-    ## and the exists test will evaluate to false.
-    [ -e "$f" ] && source $HOME/.bash.d/*
-
-    ## This is all we needed to know, so we can break after the first iteration
-    break
-done
-
+if [ -d "$HOME/.bash.d" ]; then
+    for s in $HOME/.bash.d/*
+    do
+      source $s
+    done
+fi
