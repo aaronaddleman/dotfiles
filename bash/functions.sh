@@ -32,4 +32,8 @@ function docker_rm_images_forced() {
   docker rmi $(docker images -a -q) --force
 }
 
+function sslexp() {
+  openssl s_client -showcerts -servername $1 -connect $1:443 2> /dev/null | openssl x509 -noout -enddate
+}
+
 # remove ssh host from known hosts file
