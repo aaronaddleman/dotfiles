@@ -1,5 +1,18 @@
 # functions
 
+# print echo if debug is true
+debug() {
+    LEVEL="$1"
+    MESSAGE="$2"
+    CHAR="."
+
+    LEADER=$(printf '%*s' "$LEVEL" | tr ' ' "$CHAR")
+
+    if [ "$DEBUG" = "true" ]; then
+        echo "$LEADER $MESSAGE"
+    fi
+}
+
 # scan all dirs for git changes
 function gscan() {
   for d in */
@@ -33,7 +46,7 @@ function docker_rm_images_forced() {
 }
 
 function sslexp() {
-  openssl s_client -showcerts -servername $1 -connect $1:443 2> /dev/null | openssl x509 -noout -enddate
+  openssl s_client -showcerts -servername $1 -connect $1:$2 2> /dev/null | openssl x509 -noout -enddate
 }
 
 # remove ssh host from known hosts file

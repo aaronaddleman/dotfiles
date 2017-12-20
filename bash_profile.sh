@@ -20,6 +20,7 @@ source $SCRIPT_PATH/bash/aliases.sh
 source $SCRIPT_PATH/bash/functions.sh
 source $SCRIPT_PATH/bash/prompt.sh
 source $SCRIPT_PATH/bash/rvm.sh
+source $SCRIPT_PATH/bash/gcloud.sh
 
 # if you have any extra stuff you want to load
 if [ -d "$HOME/.bash.d" ]; then

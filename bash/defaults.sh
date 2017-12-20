@@ -1,3 +1,6 @@
+# set true/false
+DEBUG="false"
+
 # If not running interactively, don't do anything!
 [[ $- != *i* ]] && return
 
@@ -15,3 +18,6 @@ fi
 
 #if your running gtk and want to ignore errors
 export NO_AT_BRIDGE=1
+
+# GOLANG GOHOME
+GOPATH=$HOME/go
