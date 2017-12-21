@@ -2,7 +2,7 @@
 DEBUG="false"
 
 # shellcheck source=/dev/null
-[ -s ~/.profile ] && . ~/.profile
+#[ -s ~/.profile ] && . ~/.profile
 
 # find our script_path
 pushd . > /dev/null

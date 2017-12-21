@@ -44,3 +44,8 @@ function fop() {
   NAME=$2
   op get item --vault=$VAULT "$NAME" | jq -r '.details.fields[] | select(.name | contains("password")) | .value'
 }
+
+# lock screen with i3lock
+lockscreen () {
+  i3lock --color=000000 --show-failed-attempts
+}
