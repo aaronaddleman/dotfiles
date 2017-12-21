@@ -1,18 +1,5 @@
 # functions
 
-# print echo if debug is true
-debug() {
-    LEVEL="$1"
-    MESSAGE="$2"
-    CHAR="."
-
-    LEADER=$(printf '%*s' "$LEVEL" | tr ' ' "$CHAR")
-
-    if [ "$DEBUG" = "true" ]; then
-        echo "$LEADER $MESSAGE"
-    fi
-}
-
 # scan all dirs for git changes
 function gscan() {
   for d in */

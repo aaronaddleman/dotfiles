@@ -1,6 +1,3 @@
-# set true/false
-DEBUG="false"
-
 # If not running interactively, don't do anything!
 [[ $- != *i* ]] && return
 
@@ -21,3 +18,6 @@ export NO_AT_BRIDGE=1
 
 # GOLANG GOHOME
 GOPATH=$HOME/go
+
+# enable rvm
+ENABLE_RVM="true"

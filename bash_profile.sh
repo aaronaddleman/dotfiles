@@ -1,3 +1,6 @@
+# set true/false to print debug statements
+DEBUG="false"
+
 # shellcheck source=/dev/null
 [ -s ~/.profile ] && . ~/.profile
 
@@ -11,18 +14,28 @@ cd `dirname ${SCRIPT_PATH}` > /dev/null
 SCRIPT_PATH=`pwd`;
 popd  > /dev/null
 
+# print echo if debug is true
+debug() {
+    LEVEL="$1"
+    MESSAGE="$2"
+    CHAR="."
+
+    LEADER=$(printf '%*s' "$LEVEL" | tr ' ' "$CHAR")
+
+    if [ "$DEBUG" = "true" ]; then
+        echo "$LEADER $MESSAGE"
+    fi
+}
+
 # load bash scripts
-source $SCRIPT_PATH/bash/defaults.sh
-source $SCRIPT_PATH/bash/path.sh
-source $SCRIPT_PATH/bash/env.sh
-source $SCRIPT_PATH/bash/completion.sh
-source $SCRIPT_PATH/bash/aliases.sh
-source $SCRIPT_PATH/bash/functions.sh
-source $SCRIPT_PATH/bash/prompt.sh
-source $SCRIPT_PATH/bash/rvm.sh
-source $SCRIPT_PATH/bash/gcloud.sh
+for a in $SCRIPT_PATH/bash/*sh
+do
+  debug "1" "loading $a ($(date))"
+  source $a
+done
 
 # if you have any extra stuff you want to load
+
 if [ -d "$HOME/.bash.d" ]; then
     for s in $HOME/.bash.d/*
     do
