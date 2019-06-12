@@ -1,5 +1,11 @@
 # functions
 
+# set git config of a dir
+github_public() {
+    git config user.name "Aaron Addleman"
+    git config user.email aaronaddleman@gmail.com
+}
+
 # scan all dirs for git changes
 function gscan() {
   for d in */
