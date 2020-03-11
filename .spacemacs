@@ -41,6 +41,7 @@ values."
      better-defaults
      emacs-lisp
      git
+     kubernetes
      markdown
      org
      (shell :variables
