@@ -31,34 +31,59 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     javascript
-     terraform
-     html
-     sql
-     python
-     helm
-     auto-completion
-     better-defaults
-     emacs-lisp
-     git
-     kubernetes
-     markdown
-     org
-     (shell :variables
-            shell-default-height 30
-            shell-default-position 'bottom)
-     spell-checking
-     syntax-checking
-     version-control
-     yaml
-     ruby
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-snippets-in-popup t)
+     (better-defaults)
+     (docker)
+     (emacs-lisp)
+     (git)
+     (gnus)
+     (go :variables
+         go-use-gometalinter t)
+     (helm)
+     (html)
+     (ibuffer :variables
+              ibuffer-group-buffers-by 'project)
+     (imenu-list)
+     (javascript)
+     (kubernetes)
+     (markdown)
+     (org :variables
+          org-enable-hugo-support t
+          org-enable-org-journal-support t)
+     (plantuml :variables
+               plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"
+               org-plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"
+               plantuml-default-exec-mode 'jar)
+     (python :variables
+             python-auto-set-local-pyenv-version nil)
+     (ranger)
+     (rebox)
+     (restclient)
+     (ruby)
+     (semantic)
+     (shell)
+     (spell-checking)
+     (sql)
+     (syntax-checking)
+     (terraform)
+     (version-control)
+     (yaml)
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
-                                      groovy-mode)
+                                      groovy-mode
+                                      jsonnet-mode
+                                      kubernetes
+                                      kubernetes-evil
+                                      window-purpose
+                                      company-restclient
+                                      vterm)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -137,10 +162,10 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 20
+                               :size 18
                                :weight normal
                                :width normal
-                               :powerline-scale 1.1)
+                               :powerline-scale 1.2)
    ;; The leader key
    dotspacemacs-leader-key "SPC"
    ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
@@ -209,7 +234,7 @@ values."
    dotspacemacs-helm-use-fuzzy 'always
    ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
-   dotspacemacs-enable-paste-transient-state nil
+   dotspacemacs-enable-paste-transient-state t
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
    dotspacemacs-which-key-delay 0.4
@@ -263,13 +288,13 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers 't
+   dotspacemacs-line-numbers t
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    ;; If non-nil pressing the closing parenthesis `)' key in insert mode passes
    ;; over any automatically added closing parenthesis, bracket, quote, etc…
    ;; This can be temporary disabled by pressing `C-q' before `)'. (default nil)
@@ -294,7 +319,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'changed
    ))
 
 (defun dotspacemacs/user-init ()
@@ -317,6 +342,10 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (setq web-mode-code-indent-offset n) ; web-mode, js code in html file
     (setq css-indent-offset n) ; css-mode
     )
+
+  ;; this fixes line number margins and zooming text
+  ;;(display-line-numbers 'relative)
+  (setq display-line-numbers-mode t)
   )
 
 (defun dotspacemacs/user-config ()
@@ -330,6 +359,46 @@ you should place your code here."
   (my-setup-indent 2)
   (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
   (setq org-agenda-files '("~/src/notes/org" "~/src/notes/org-jira"))
+  (global-company-mode)
+  ;; improved faces
+  ;; https://develop.spacemacs.org/layers/+completion/auto-completion/README.html#improved-faces
+  (custom-set-faces
+   '(company-tooltip-common
+     ((t (:inherit company-tooltip :weight bold :underline nil))))
+   '(company-tooltip-common-selection
+     ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+
+  ;; org settings
+  (setq org-journal-dir "~/src/orgmode/journal")
+  ;; there is a warning saying that if you add .org to the format it
+  ;; will break the calendar search functionality...
+  (setq org-journal-file-format "%Y-%m-%d.org")
+
+  ;; custom key bindings global
+  (spacemacs/declare-prefix "o" "custom")
+  (spacemacs/set-leader-keys "ojd" 'dumb-jump-go)
+  (spacemacs/set-leader-keys "ojb" 'bookmark-jump)
+  (spacemacs/set-leader-keys "ojl" 'imenu-list)
+  (spacemacs/set-leader-keys "obs" 'bookmark-set)
+  (spacemacs/set-leader-keys "obj" 'bookmark-jump)
+  (spacemacs/set-leader-keys "obd" 'bookmark-delete)
+  ;; custom key bindings for modes
+  ;; this can be used with , o i -or- SPC m o i
+  (spacemacs/declare-prefix-for-mode 'org-mode "o" "custom")
+  (spacemacs/set-leader-keys-for-major-mode 'org-mode "oi" 'org-id-get-create)
+
+  ;; this fixes an issue with semantic
+  ;; to not make it lag
+  (use-package semantic
+    :config
+    (setq-mode-local emacs-lisp-mode
+                     semanticdb-find-default-throttle
+                     (default-value 'semanticdb-find-default-throttle)))
+
+  ;; enabling window-purpose-x
+  (require 'window-purpose-x)
+
+  (setq display-line-numbers-mode t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -341,7 +410,7 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (spaceline-all-the-icons all-the-icons memoize groovy-mode web-mode tagedit sql-indent slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data terraform-mode hcl-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode yaml-mode xterm-color unfill smeargle shell-pop rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company-anaconda company chruby bundler inf-ruby auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (restclient-helm ob-restclient ob-http company-restclient restclient know-your-http-well ranger ledger-mode flycheck-ledger plantuml-mode window-purpose treemacs-evil treemacs ht pfuture typo stickyfunc-enhance srefactor org-brain rebox2 imenu-list ibuffer-projectile company-quickhelp rainbow-mode rainbow-identifiers color-identifiers-mode vterm flycheck-gometalinter dockerfile-mode docker tablist docker-tramp go-guru go-eldoc company-go go-mode kubernetes-evil kubernetes jsonnet-mode spaceline-all-the-icons all-the-icons memoize groovy-mode web-mode tagedit sql-indent slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data terraform-mode hcl-mode web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode yaml-mode xterm-color unfill smeargle shell-pop rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode minitest markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company-anaconda company chruby bundler inf-ruby auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode anaconda-mode pythonic ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
