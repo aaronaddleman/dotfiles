@@ -1,0 +1,47 @@
+order += "pomodoro"
+order += "online_status"
+order += "arch_updates"
+order += "loadavg"
+order += "time"
+order += "screenshot"
+order += "volume_status"
+
+pomodoro {
+    timer_pomodoro = 900
+}
+
+diskdata {
+    disk = '/dev/dm-0'
+}
+
+volume_status {
+    button_mute = 1
+    button_down = 2
+    button_up = 3
+}
+
+arch_updates {
+    format = "Pkg:{total}"
+}
+
+general {
+    # These will be used if not supplied by a module
+    color = '#FFFFFF'
+    color_good = '#00FF00'
+    color_bad = '#FF0000'
+    color_degraded = '#FFFF00'
+}
+
+time {
+    color = 'FF00FF'
+    format = "%A, %F %I:%M %z"
+}
+
+
+battery_level {
+    color_good = '#00AA00'
+    color_bad = '#AA0000'
+    color_degraded = '#AAAA00'
+    color_charging = '#FFFF00'
+}
+
