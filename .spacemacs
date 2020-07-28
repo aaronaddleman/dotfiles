@@ -31,6 +31,7 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     (ansible)
      (nginx)
      (auto-completion :variables
                       auto-completion-enable-help-tooltip t
@@ -231,9 +232,9 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-colorize-cursor-according-to-state t
 
    ;; Default font or prioritized list of fonts.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 18
-                               :weight normal
+   dotspacemacs-default-font '("Fira Code"
+                               :size 15
+                               :weight Regular
                                :width normal
                                :powerline-scale 1.0)
    ;; The leader key
@@ -523,7 +524,9 @@ you should place your code here."
   ;; (spacemacs/toggle-transparency)
   (my-setup-indent 2)
   (add-to-list 'auto-mode-alist '("Jenkinsfile" . groovy-mode))
+  ;; set to your location of org files for agenda
   (setq org-agenda-files '("~/src/notes/org" "~/src/notes/org-jira"))
+  ;; turn on global auto-complete
   (global-company-mode)
   ;; improved faces
   ;; https://develop.spacemacs.org/layers/+completion/auto-completion/README.html#improved-faces
