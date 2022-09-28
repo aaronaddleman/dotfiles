@@ -16,4 +16,6 @@ py3status modules:
 
 https://github.com/ultrabug/py3status/tree/master/py3status/modules
 
+## emacs
 
+### doom
