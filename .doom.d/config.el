@@ -87,7 +87,18 @@
 
 (require 'company-org-roam)
 (use-package company-org-roam
-  :when (featurep! :completion company)
+  :when (modulep! :completion company)
   :after org-roam
   :config
   (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+
+;; word wrapping
+;;
+;; use a single indent in json-mode
+(add-hook! 'json-mode-hook
+  (setq-local +word-wrap-extra-indent 'single)
+  (+word-wrap-mode +1))
+
+(add-hook! 'python-mode-hook
+  (setq-local +word-wrap-extra-indent 'single)
+  (+word-wrap-mode +1))
