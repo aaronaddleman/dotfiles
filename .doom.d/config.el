@@ -78,32 +78,32 @@
 ;; they are implemented.
 
 ;; From https://github.com/org-roam/org-roam-ui#doom
-(use-package! websocket
-  :after org-roam
-  :config (setq org-roam-ui-sync-theme t
-                org-roam-ui-follow t
-                org-roam-ui-update-on-save t
-                org-roam-ui-open-on-start t))
+;;(use-package! websocket
+;;  :after org-roam
+;;  :config (setq org-roam-ui-sync-theme t
+;;                org-roam-ui-follow t
+;;                org-roam-ui-update-on-save t
+;;                org-roam-ui-open-on-start t))
 
 (require 'company-org-roam)
-(use-package company-org-roam
-  :when (modulep! :completion company)
-  :after org-roam
-  :config
-  (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+;;(use-package company-org-roam
+;;  :when (modulep! :completion company)
+;;  :after org-roam
+;;  :config
+;;  (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
 
 ;; word wrapping
 ;;
 ;; use a single indent in json-mode
-(add-hook! 'json-mode-hook
-  (setq-local +word-wrap-extra-indent 'single)
-  (+word-wrap-mode +1))
+;;(add-hook! 'json-mode-hook
+;;  (setq-local +word-wrap-extra-indent 'single)
+;;  (+word-wrap-mode +1))
 
-(add-hook! 'python-mode-hook
-  (setq-local +word-wrap-extra-indent 'single)
-  (+word-wrap-mode +1))
+;;(add-hook! 'python-mode-hook
+;;  (setq-local +word-wrap-extra-indent 'single)
+;;  (+word-wrap-mode +1))
 
 
 ;; word-wrapping everywhere
 ;; https://docs.doomemacs.org/v21.12/modules/editor/word-wrap/#usage,code-1--2
-(+global-word-wrap-mode +1)
+;;(+global-word-wrap-mode +1)
