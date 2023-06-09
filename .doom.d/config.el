@@ -102,3 +102,8 @@
 (add-hook! 'python-mode-hook
   (setq-local +word-wrap-extra-indent 'single)
   (+word-wrap-mode +1))
+
+
+;; word-wrapping everywhere
+;; https://docs.doomemacs.org/v21.12/modules/editor/word-wrap/#usage,code-1--2
+(+global-word-wrap-mode +1)
