@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
+(setq user-full-name "Aaron Addleman"
+      user-mail-address "aaronaddleman@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -15,7 +15,7 @@
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-symbol-font' -- for symbols
+;; - `doom-unicode-font' -- for unicode glyphs
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
@@ -24,6 +24,7 @@
 ;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
 ;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
 ;;
+(setq doom-font (font-spec :family "Source Code Pro" :size 14 :weight 'normal))
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -40,7 +41,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/src/github.com/org-roam-notes/")
+;;(setq org-roam-directory "~/src/github.com/org-roam-notes/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -74,3 +76,46 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; From https://github.com/org-roam/org-roam-ui#doom
+;;(use-package! websocket
+;;  :after org-roam
+;;  :config (setq org-roam-ui-sync-theme t
+;;                org-roam-ui-follow t
+;;                org-roam-ui-update-on-save t
+;;                org-roam-ui-open-on-start t))
+
+(require 'company-org-roam)
+;;(use-package company-org-roam
+;;  :when (modulep! :completion company)
+;;  :after org-roam
+;;  :config
+;;  (set-company-backend! 'org-mode '(company-org-roam company-yasnippet company-dabbrev)))
+
+;; word wrapping
+;;
+;; use a single indent in json-mode
+;;(add-hook! 'json-mode-hook
+;;  (setq-local +word-wrap-extra-indent 'single)
+;;  (+word-wrap-mode +1))
+
+;;(add-hook! 'python-mode-hook
+;;  (setq-local +word-wrap-extra-indent 'single)
+;;  (+word-wrap-mode +1))
+
+
+;; word-wrapping everywhere
+;; https://docs.doomemacs.org/v21.12/modules/editor/word-wrap/#usage,code-1--2
+;;(+global-word-wrap-mode +1)
+
+;; set line mode wrap
+(setq-default visual-line-mode t)
+
+;; copilot
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("TAB" . 'copilot-accept-completion)
+              ("C-TAB" . 'copilot-accept-completion-by-word)
+              ("C-<tab>" . 'copilot-accept-completion-by-word)))
