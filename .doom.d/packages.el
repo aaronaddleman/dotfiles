@@ -52,6 +52,9 @@
 ;; multi-term
 (package! multi-term)
 
+;; multi-projectile
+(package! term-projectile)
+
 ;; copilot
 (package! copilot
   :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
